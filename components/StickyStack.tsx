@@ -14,7 +14,9 @@ const clamp = (n: number) => Math.min(1, Math.max(0, n));
 // round their corners. A panel taller than the viewport sticks only when
 // its bottom reaches the bottom of the screen, so all of it is seen
 // before it's covered. Elements marked data-reveal (inside any panel)
-// animate in when they enter the viewport.
+// animate in when they enter the viewport. Panels marked data-progress get
+// a --panel-progress custom property that runs from 0, when the panel's top
+// is halfway up the screen, to 1, when the next panel's top is.
 //
 // Without JS, or with reduced motion, everything scrolls normally.
 // Anchor targets should be zero-height siblings between panels (see
@@ -28,19 +30,25 @@ export default function StickyStack({ children }: { children: ReactNode }) {
     if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const panels = Array.from(root.querySelectorAll<HTMLElement>(":scope > [data-panel]"));
+    const tracksProgress = panels.map((panel) => panel.hasAttribute("data-progress"));
     const nav = document.querySelector("header");
     let navHeight = 0;
+    let viewportHeight = 0;
+    let heights: number[] = [];
     let stuckBottoms: number[] = [];
     let covers: number[] = [];
+    let progresses: number[] = [];
     let raf = 0;
 
     const measure = () => {
       navHeight = nav?.offsetHeight ?? 0;
       document.documentElement.style.setProperty("--nav-height", `${navHeight}px`);
       const vh = window.innerHeight;
+      viewportHeight = vh;
+      heights = panels.map((panel) => panel.offsetHeight);
 
-      stuckBottoms = panels.map((panel) => {
-        const height = panel.offsetHeight;
+      stuckBottoms = panels.map((panel, i) => {
+        const height = heights[i];
         const top = Math.min(navHeight, vh - height);
         panel.style.position = "sticky";
         panel.style.top = `${top}px`;
@@ -50,17 +58,29 @@ export default function StickyStack({ children }: { children: ReactNode }) {
         return top + height;
       });
       covers = panels.map(() => -1);
+      progresses = panels.map(() => -1);
     };
 
     const render = () => {
       raf = 0;
       panels.forEach((panel, i) => {
         const next = panels[i + 1];
+        const nextTop = next ? next.getBoundingClientRect().top : 0;
+
+        // Progress only moves while the next panel's top is below the middle
+        // of the screen, where it can't be stuck yet, so nextTop is its real
+        // position in the page.
+        if (next && tracksProgress[i] && heights[i] > 0) {
+          const progress =
+            Math.round(clamp((viewportHeight / 2 - nextTop) / heights[i] + 1) * 1000) / 1000;
+          if (progress !== progresses[i]) {
+            progresses[i] = progress;
+            panel.style.setProperty("--panel-progress", String(progress));
+          }
+        }
+
         const travel = stuckBottoms[i] - navHeight;
-        const cover =
-          next && travel > 0
-            ? clamp((stuckBottoms[i] - next.getBoundingClientRect().top) / travel)
-            : 0;
+        const cover = next && travel > 0 ? clamp((stuckBottoms[i] - nextTop) / travel) : 0;
         const rounded = Math.round(cover * 1000) / 1000;
         if (rounded === covers[i]) return;
         covers[i] = rounded;
@@ -125,6 +145,7 @@ export default function StickyStack({ children }: { children: ReactNode }) {
       window.removeEventListener("resize", remeasure);
       window.removeEventListener("scroll", schedule);
       document.documentElement.style.removeProperty("--nav-height");
+      panels.forEach((panel) => panel.style.removeProperty("--panel-progress"));
     };
   }, []);
 

@@ -62,6 +62,13 @@ start` (`next start`): it doesn't serve a static export.
   `#project-<slug>`, `#builds`) are zero-height `.stack-anchor` spans
   between panels, because a stuck panel's own position isn't its page
   position. Don't put ids on the panels for linking.
+- **Bridge backdrop** — each case-study panel has
+  `components/BridgeBackdrop.tsx` behind it: the Clifton Suspension
+  Bridge construction renders in `public/media/bridge/<n>.webp`
+  (transparent WebPs, stage 1 to 5, same camera). The panel for stage
+  n shows stage n over stage n+1, and the top image fades with
+  `--panel-progress`, which StickyStack sets on panels marked
+  `data-progress`. The last stage is the finished bridge on its own.
 - **`data/hero.ts`** — the homepage hero media. `lib/media.ts` checks
   at build time whether a media `src` exists under `public/`; missing
   files render as a labelled placeholder

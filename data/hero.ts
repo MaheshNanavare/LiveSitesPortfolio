@@ -9,9 +9,9 @@ export type Media = {
   alt: string;
 };
 
+// Portrait video (720×1280), so the hero frame is taller than wide.
 export const heroMedia: Media = {
   kind: "video",
-  src: "/media/hero/bristol-harbourside.mp4",
-  poster: "/media/hero/bristol-harbourside.jpg",
-  alt: "Bristol's Floating Harbour with the coloured houses of Cliftonwood on the hill behind",
+  src: "/media/hero/Bristol_suspension_bridge_Cons.mp4",
+  alt: "The Clifton Suspension Bridge in Bristol being built across the Avon Gorge",
 };

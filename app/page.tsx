@@ -54,7 +54,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="aspect-[4/3] overflow-hidden rounded-lg border border-iron-rule md:aspect-[4/5]">
+          <div className="mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-lg border border-iron-rule md:max-w-none">
             <MediaSlot media={resolveMedia(heroMedia)} />
           </div>
         </div>

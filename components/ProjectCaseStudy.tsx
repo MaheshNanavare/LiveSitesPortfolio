@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import BridgeBackdrop, { BRIDGE_STAGES } from "@/components/BridgeBackdrop";
 import BrowserFrame from "@/components/BrowserFrame";
 import type { Project } from "@/data/projects";
 import type { ResolvedScreenshot } from "@/lib/media";
@@ -21,14 +22,18 @@ export default function ProjectCaseStudy({
   const dark = tone === "dark";
   const headingId = `project-${project.slug}-heading`;
   const [main, second, third] = shots;
+  // One bridge construction stage per case study, in order.
+  const stage = index + 1;
 
   return (
     <section
       data-panel
+      data-progress={stage < BRIDGE_STAGES || undefined}
       aria-labelledby={headingId}
-      className={`panel w-full ${dark ? "surface-iron dots-dark" : "bg-stone-deep dots-light"}`}
+      className={`panel relative w-full ${dark ? "surface-iron dots-dark" : "bg-stone-deep dots-light"}`}
     >
-      <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 md:py-24">
+      <BridgeBackdrop stage={stage} tone={tone} />
+      <div className="relative mx-auto max-w-6xl px-5 py-16 sm:px-8 md:py-24">
         <div
           data-reveal
           className={`flex flex-wrap items-center justify-between gap-3 border-b pb-4 text-sm ${

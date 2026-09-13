@@ -1,5 +1,4 @@
 import type { CSSProperties } from "react";
-import BridgeBackdrop, { BRIDGE_STAGES } from "@/components/BridgeBackdrop";
 import BrowserFrame from "@/components/BrowserFrame";
 import type { Project } from "@/data/projects";
 import type { ResolvedScreenshot } from "@/lib/media";
@@ -22,17 +21,18 @@ export default function ProjectCaseStudy({
   const dark = tone === "dark";
   const headingId = `project-${project.slug}-heading`;
   const [main, second, third] = shots;
-  // One bridge construction stage per case study, in order.
-  const stage = index + 1;
 
+  // A scene in the case-studies panel (see app/page.tsx). Once StickyStack
+  // runs, its own background gives way to the panel's shared, fixed one, and
+  // the wash fades the bridge behind the heading and description.
   return (
     <section
-      data-panel
-      data-progress={stage < BRIDGE_STAGES || undefined}
+      id={`project-${project.slug}`}
+      data-scene={dark ? 1 : 0}
       aria-labelledby={headingId}
-      className={`panel relative w-full ${dark ? "surface-iron dots-dark" : "bg-stone-deep dots-light"}`}
+      className={`scene relative w-full ${dark ? "surface-iron dots-dark" : "bg-stone-deep dots-light"}`}
     >
-      <BridgeBackdrop stage={stage} tone={tone} />
+      <div aria-hidden className="scene-wash" />
       <div className="relative mx-auto max-w-6xl px-5 py-16 sm:px-8 md:py-24">
         <div
           data-reveal

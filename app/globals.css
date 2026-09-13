@@ -150,16 +150,37 @@ body {
   background-size: 18px 18px;
 }
 
-/* The bridge being built behind the case studies (see
-   components/BridgeBackdrop). The frame sticks to the viewport inside its
-   panel; the top stage fades with --panel-progress to reveal the next. */
+/* The case studies (see app/page.tsx): scenes in one panel whose content
+   scrolls over a shared background that stays put. StickyStack sets
+   --scene-tone (0 light, 1 dark) and --scene on the panel. Until it runs,
+   or with reduced motion, each scene keeps its own background instead. */
+.scene-panel {
+  --scene-ground: color-mix(
+    in srgb,
+    var(--color-iron) calc(var(--scene-tone, 0) * 100%),
+    var(--color-stone-deep)
+  );
+  /* clip, not hidden, so the backdrop frame can still stick */
+  overflow: clip;
+}
+
+.motion .scene-panel {
+  background-color: var(--scene-ground);
+}
+
+.motion .scene {
+  background: none;
+}
+
 .bridge-backdrop {
+  display: none;
   position: absolute;
   inset: 0;
-  border-radius: inherit;
-  /* clip, not hidden, so the frame can still stick */
-  overflow: clip;
   pointer-events: none;
+}
+
+.motion .bridge-backdrop {
+  display: block;
 }
 
 .bridge-backdrop-frame {
@@ -167,15 +188,40 @@ body {
   top: var(--nav-height, 0px);
   height: calc(100vh - var(--nav-height, 0px));
   max-height: 100%;
+  background-image: radial-gradient(
+    color-mix(in srgb, rgb(255 255 255 / 0.055) calc(var(--scene-tone, 0) * 100%), rgb(19 35 44 / 0.07))
+      1px,
+    transparent 1px
+  );
+  background-size: 18px 18px;
 }
 
+.bridge-stages {
+  position: absolute;
+  inset: 0;
+  opacity: 0.7;
+}
+
+/* Each stage shows fully when --scene reaches its --stage, and blends with
+   the stage either side of that: both are opaque halfway, so what the two
+   share never thins out. The last stage stays once it's reached. Filter
+   per image rather than on the frame, so the fades don't refilter the
+   whole frame. */
 .bridge-stage {
+  --away: calc(var(--stage) - var(--scene, 0));
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: 30% 100%;
+  filter: saturate(0.85);
+  opacity: clamp(0, 2 - 2 * max(var(--away), -1 * var(--away)), 1);
+  transition: opacity 160ms linear;
+}
+
+.bridge-stage-last {
+  opacity: clamp(0, 2 - 2 * var(--away), 1);
 }
 
 @media (min-width: 48rem) {
@@ -184,51 +230,27 @@ body {
   }
 }
 
-.bridge-stage-fading {
-  opacity: calc(1 - var(--panel-progress, 0));
-  transition: opacity 160ms linear;
-}
-
-.bridge-backdrop-light .bridge-backdrop-frame {
-  opacity: 0.72;
-}
-
-.bridge-backdrop-dark .bridge-backdrop-frame {
-  opacity: 0.7;
-}
-
-/* Filter per image rather than on the frame, so the fade doesn't refilter
-   the whole frame every frame. */
-.bridge-backdrop-light .bridge-stage {
-  filter: saturate(0.85);
-}
-
-.bridge-backdrop-dark .bridge-stage {
-  filter: saturate(0.8);
-}
-
-/* A light wash of the panel colour over the top of the panel keeps the
-   heading and description readable, then gives way to the bridge. */
-.bridge-backdrop::after {
-  content: "";
+/* A wash of the ground colour behind each scene's heading and description
+   keeps them readable over the bridge. It's the same colour as the ground,
+   so it has no visible edge; it only fades the bridge. */
+.scene-wash {
+  display: none;
   position: absolute;
   inset: 0 0 auto;
   height: min(100%, 60rem);
-  background: linear-gradient(to bottom, var(--scrim) 0 35%, transparent);
+  pointer-events: none;
+  --wash: color-mix(in srgb, var(--scene-ground) 70%, transparent);
+  background: linear-gradient(to bottom, transparent, var(--wash) 6rem 35%, transparent);
+}
+
+.motion .scene-wash {
+  display: block;
 }
 
 @media (min-width: 48rem) {
-  .bridge-backdrop::after {
+  .scene-wash {
     height: min(100%, 46rem);
   }
-}
-
-.bridge-backdrop-light {
-  --scrim: color-mix(in srgb, var(--color-stone-deep) 70%, transparent);
-}
-
-.bridge-backdrop-dark {
-  --scrim: color-mix(in srgb, var(--color-iron) 70%, transparent);
 }
 
 /* Scroll reveal, switched on by StickyStack once JS runs */

@@ -40,8 +40,8 @@ start` (`next start`): it doesn't serve a static export.
 - **`data/projects.ts`** — hand-maintained array of portfolio
   projects. Each one renders twice on the homepage: as a folder card
   (`components/ProjectFolder.tsx`) that links to `#project-<slug>`,
-  and as its own case-study panel (`components/ProjectCaseStudy.tsx`)
-  with three screenshots in `BrowserFrame`s.
+  and as its own case study (`components/ProjectCaseStudy.tsx`) with
+  three screenshots in `BrowserFrame`s.
   `lib/media.ts#resolveScreenshots` maps a project to
   `public/media/projects/<slug>/<n>.webp` and `<n>-sm.webp`. Only list
   projects that are actually deployed and live; entries with
@@ -59,16 +59,25 @@ start` (`next start`): it doesn't serve a static export.
   variants, stagger via the `--reveal-i` style) animate in on scroll.
   The CSS is gated on the `.motion` class, so without JS or with
   reduced motion the page scrolls normally. Anchor targets (`#work`,
-  `#project-<slug>`, `#builds`) are zero-height `.stack-anchor` spans
-  between panels, because a stuck panel's own position isn't its page
-  position. Don't put ids on the panels for linking.
-- **Bridge backdrop** — each case-study panel has
-  `components/BridgeBackdrop.tsx` behind it: the Clifton Suspension
-  Bridge construction renders in `public/media/bridge/<n>.webp`
-  (transparent WebPs, stage 1 to 5, same camera). The panel for stage
-  n shows stage n over stage n+1, and the top image fades with
-  `--panel-progress`, which StickyStack sets on panels marked
-  `data-progress`. The last stage is the finished bridge on its own.
+  `#builds`) are zero-height `.stack-anchor` spans between panels,
+  because a stuck panel's own position isn't its page position. Don't
+  put ids on the panels for linking.
+- **Case studies** are not panels. They're scenes (`data-scene`, 0 for
+  light, 1 for dark) inside one `.scene-panel` panel, and only their
+  content scrolls while the background stays put. StickyStack sets
+  `--scene` (which scene is at mid-screen, continuous) and
+  `--scene-tone` (the ground, blending between light and dark at each
+  boundary) on that panel, and `app/globals.css` paints the shared
+  ground from them. Without `.motion`, each scene falls back to its
+  own background. The `#project-<slug>` ids sit on the scenes
+  themselves. That works for links from above (the folder cards),
+  because a tall panel only sticks once its end is on screen.
+- **Bridge backdrop** — `components/BridgeBackdrop.tsx` is the fixed
+  background of the case studies: the Clifton Suspension Bridge
+  construction renders in `public/media/bridge/<n>.webp` (transparent
+  WebPs, stage 1 to 5, same camera), one stage per case study,
+  crossfading with `--scene`. The last stage is the finished bridge.
+  Each scene's `.scene-wash` fades the bridge behind its heading.
 - **`data/hero.ts`** — the homepage hero media. `lib/media.ts` checks
   at build time whether a media `src` exists under `public/`; missing
   files render as a labelled placeholder

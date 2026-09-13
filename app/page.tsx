@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import BridgeBackdrop from "@/components/BridgeBackdrop";
 import OfferSection from "@/components/OfferSection";
 import MediaSlot from "@/components/MediaSlot";
 import ProjectCaseStudy from "@/components/ProjectCaseStudy";
@@ -112,17 +113,24 @@ export default function Home() {
         </div>
       </section>
 
-      {work.flatMap(({ project, shots }, i) => [
-        <span key={`${project.slug}-anchor`} id={`project-${project.slug}`} className="stack-anchor" />,
-        <ProjectCaseStudy
-          key={project.slug}
-          project={project}
-          shots={shots}
-          index={i}
-          total={work.length}
-          tone={i % 2 === 0 ? "light" : "dark"}
-        />,
-      ])}
+      {/* One panel for all the case studies: their content scrolls over a
+          shared background that stays put, blends between light and dark,
+          and builds the bridge. The panel only sticks once its end is on
+          screen, so links from above it (the project folders) can target
+          the case studies' own ids. */}
+      <div data-panel className="panel scene-panel relative w-full">
+        <BridgeBackdrop />
+        {work.map(({ project, shots }, i) => (
+          <ProjectCaseStudy
+            key={project.slug}
+            project={project}
+            shots={shots}
+            index={i}
+            total={work.length}
+            tone={i % 2 === 0 ? "light" : "dark"}
+          />
+        ))}
+      </div>
 
       <span id="builds" className="stack-anchor" />
       <OfferSection />

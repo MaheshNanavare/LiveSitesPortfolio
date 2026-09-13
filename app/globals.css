@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+/*
+  Palette
+  stone  — Avon Gorge limestone, the page ground
+  iron   — Brunel's wrought iron, dark surfaces and ink
+  signal — Cliftonwood yellow, the one accent
+  pink / sky / mint — the rest of the Cliftonwood terrace, used only
+  as syntax colours inside code panels
+*/
+:root {
+  --color-stone: #ebede8;
+  --color-stone-deep: #dfe3dd;
+  --color-iron: #13232c;
+  --color-iron-raised: #1b2e38;
+  --color-iron-rule: #2c404b;
+  --color-ink: #13232c;
+  --color-ink-muted: #52616a;
+  --color-rule: #c6cdc8;
+  --color-on-iron: #e4eaec;
+  --color-on-iron-muted: #93a4ac;
+  --color-signal: #f4c542;
+  --color-house-pink: #f08ba8;
+  --color-house-sky: #8cc4e8;
+  --color-house-mint: #9bd8b4;
+  --color-house-orange: #f3a76b;
+}
+
+@theme inline {
+  --color-stone: var(--color-stone);
+  --color-stone-deep: var(--color-stone-deep);
+  --color-iron: var(--color-iron);
+  --color-iron-raised: var(--color-iron-raised);
+  --color-iron-rule: var(--color-iron-rule);
+  --color-ink: var(--color-ink);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-rule: var(--color-rule);
+  --color-on-iron: var(--color-on-iron);
+  --color-on-iron-muted: var(--color-on-iron-muted);
+  --color-signal: var(--color-signal);
+  --color-house-pink: var(--color-house-pink);
+  --color-house-sky: var(--color-house-sky);
+  --color-house-mint: var(--color-house-mint);
+  --color-house-orange: var(--color-house-orange);
+  --font-sans: var(--font-archivo);
+  --font-mono: var(--font-martian);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-height, 4.1rem);
+}
+
+body {
+  background: var(--color-stone);
+  color: var(--color-ink);
+}
+
+::selection {
+  background: var(--color-signal);
+  color: var(--color-iron);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-iron);
+  outline-offset: 3px;
+}
+
+.surface-iron {
+  background: var(--color-iron);
+  color: var(--color-on-iron);
+}
+
+.surface-iron :focus-visible {
+  outline-color: var(--color-signal);
+}
+
+/* Archivo stretched wide and heavy, like engineering signage */
+.type-display {
+  font-family: var(--font-archivo);
+  font-weight: 800;
+  font-stretch: 120%;
+  font-variation-settings: "wdth" 120;
+  letter-spacing: -0.02em;
+  line-height: 0.96;
+}
+
+.type-wide {
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+}
+
+/* Underline links on light ground: ink text, yellow rule */
+.link-signal {
+  text-decoration: underline;
+  text-decoration-color: var(--color-signal);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 150ms ease;
+}
+
+.link-signal:hover {
+  text-decoration-color: var(--color-ink);
+}
+
+/* Hatched fill for media slots that don't have a file yet */
+.media-hatch {
+  background-color: var(--color-iron-raised);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 14px,
+    rgb(255 255 255 / 0.035) 14px 15px
+  );
+}
+
+/* Homepage sections slide over each other (see components/StickyStack) */
+.sticky-stack {
+  background: #081116;
+  /* Fanned screenshots mustn't widen the page. clip, not hidden, so
+     position: sticky still works. */
+  overflow-x: clip;
+}
+
+.sticky-stack > .panel ~ .panel {
+  border-top-left-radius: 1.75rem;
+  border-top-right-radius: 1.75rem;
+  box-shadow: 0 -28px 60px -24px rgb(4 10 13 / 0.6);
+}
+
+@media (max-width: 40rem) {
+  .sticky-stack > .panel ~ .panel {
+    border-top-left-radius: 1.25rem;
+    border-top-right-radius: 1.25rem;
+  }
+}
+
+.stack-anchor {
+  display: block;
+  height: 0;
+}
+
+/* Faint dot grid, after the case-study panels on zalak-patel.com */
+.dots-dark {
+  background-image: radial-gradient(rgb(255 255 255 / 0.055) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.dots-light {
+  background-image: radial-gradient(rgb(19 35 44 / 0.07) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* Scroll reveal, switched on by StickyStack once JS runs */
+.motion [data-reveal] {
+  opacity: 0;
+  translate: 0 32px;
+  transition:
+    opacity 700ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    translate 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    rotate 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--reveal-i, 0) * 110ms);
+}
+
+.motion [data-reveal="fan-left"] {
+  translate: -4% 64px;
+  rotate: -4deg;
+}
+
+.motion [data-reveal="fan-right"] {
+  translate: 4% 64px;
+  rotate: 4deg;
+}
+
+.motion [data-reveal].is-in {
+  opacity: 1;
+  translate: 0 0;
+  rotate: 0deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+.prose-post p {
+  margin-bottom: 1.25em;
+}
+
+.prose-post h2 {
+  font-weight: 800;
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-size: 1.625rem;
+  line-height: 1.15;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  color: var(--color-ink);
+}
+
+.prose-post h3 {
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-top: 1.75em;
+  margin-bottom: 0.5em;
+  color: var(--color-ink);
+}
+
+.prose-post a {
+  text-decoration: underline;
+  text-decoration-color: var(--color-signal);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+}
+
+.prose-post ul,
+.prose-post ol {
+  margin: 0 0 1.25em 1.25em;
+}
+
+.prose-post ul {
+  list-style: square;
+}
+
+.prose-post ol {
+  list-style: decimal;
+}
+
+.prose-post li {
+  margin-bottom: 0.4em;
+}
+
+.prose-post code {
+  font-family: var(--font-martian), monospace;
+  background: var(--color-stone-deep);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  font-size: 0.8em;
+}
+
+.prose-post pre {
+  background: var(--color-iron);
+  color: var(--color-on-iron);
+  padding: 1.25em;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin-bottom: 1.25em;
+}
+
+.prose-post pre code {
+  background: none;
+  padding: 0;
+}
+
+.prose-post blockquote {
+  border-left: 4px solid var(--color-signal);
+  padding-left: 1em;
+  color: var(--color-ink-muted);
+}
+
+/* Martian Mono is wide by default; narrow it so snippets fit their pane */
+.code-narrow {
+  font-stretch: 87.5%;
+  font-variation-settings: "wdth" 87.5;
+}

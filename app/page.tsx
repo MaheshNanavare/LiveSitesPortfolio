@@ -32,12 +32,13 @@ export default function Home() {
           <div>
             <p className="text-on-iron-muted">Software engineer in Bristol</p>
             <h1 className="type-display mt-5 text-[clamp(2.75rem,7.2vw,6rem)] text-on-iron">
-              I build web apps and put them live.
+              From blueprint to production
             </h1>
             <p className="mt-8 max-w-[52ch] text-lg leading-relaxed text-on-iron-muted">
-              MSc Computer Science and Graduate Teacher at the University of
-              Bristol. Mostly Java and Spring Boot on the backend, TypeScript
-              and React on the front, deployed and looked after.
+              MSc in Computer Science from the University of Bristol. I turn
+              ideas into clean, live web apps with a relentless focus on the
+              details—quick load speeds, reliable features, and a polished
+              user experience from day one.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <a

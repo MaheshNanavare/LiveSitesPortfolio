@@ -34,6 +34,13 @@ export default function OfferSection() {
             a static site on Cloudflare Pages costs nothing to run.
           </p>
 
+          <p className="mt-4 max-w-[58ch] text-lg text-on-iron">
+            I care about the things that make software feel great to use:
+            snappy performance, smooth interactions, and zero surprises.
+            Every page I build is checked by hand and automated tests before
+            it ever goes live.
+          </p>
+
           <ul className="mt-8 border-t border-iron-rule">
             {terms.map((term) => (
               <li

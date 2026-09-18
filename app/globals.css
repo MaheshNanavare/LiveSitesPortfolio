@@ -280,6 +280,17 @@ body {
   rotate: 0deg;
 }
 
+/* In the phone layout the case-study pages are a sideways row (see
+   ProjectCaseStudy). Pages off to the side would only reveal mid-swipe,
+   so they're simply there. */
+@media (max-width: 47.999rem) {
+  .motion .shot-row [data-reveal] {
+    opacity: 1;
+    translate: 0 0;
+    rotate: 0deg;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAllPostSlugs, getPostBySlug } from "@/lib/posts";
+import { formatPostDate, getAllPostSlugs, getPostBySlug } from "@/lib/posts";
 
 export async function generateStaticParams() {
   return getAllPostSlugs().map((slug) => ({ slug }));
@@ -37,7 +37,9 @@ export default async function BlogPost({
         All writing
       </Link>
 
-      <p className="mt-10 text-sm text-ink-muted tabular-nums">{post.date}</p>
+      <time dateTime={post.date} className="mt-10 block text-sm text-ink-muted tabular-nums">
+        {formatPostDate(post.date)}
+      </time>
       <h1 className="type-display mt-3 text-[clamp(2.25rem,6vw,4rem)] text-ink">
         {post.title}
       </h1>

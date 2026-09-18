@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${archivo.variable} ${martian.variable}`}>
-      <body className="min-h-full flex flex-col font-sans text-[17px] leading-relaxed antialiased">
+      <body className="min-h-dvh flex flex-col font-sans text-[17px] leading-relaxed antialiased">
         <SiteNav />
         <main className="flex-1 w-full">{children}</main>
         <SiteFooter />

@@ -21,19 +21,7 @@ export default function ProjectFolder({
       aria-label={`${project.name}, ${project.role}. See three pages from the live site.`}
     >
       <div className="relative mx-auto aspect-[4/3] w-full max-w-[22rem] transition-transform duration-500 ease-out group-hover:-translate-y-2 group-focus-visible:-translate-y-2">
-        <svg
-          aria-hidden
-          viewBox="0 0 200 150"
-          preserveAspectRatio="none"
-          className="absolute inset-0 h-full w-full"
-        >
-          <path
-            d="M0 14a14 14 0 0 1 14-14h50a14 14 0 0 1 12 7l6 11h104a14 14 0 0 1 14 14v104a14 14 0 0 1-14 14H14A14 14 0 0 1 0 136Z"
-            className="fill-iron-raised stroke-iron-rule"
-            strokeWidth="1.5"
-            vectorEffect="non-scaling-stroke"
-          />
-        </svg>
+        <FolderShape className="fill-iron-raised stroke-iron-rule" />
 
         <div aria-hidden className="absolute inset-x-[10%] top-[20%] bottom-[18%]">
           <Sheet
@@ -64,6 +52,58 @@ export default function ProjectFolder({
         </div>
       </div>
     </a>
+  );
+}
+
+// The folder after the last project: empty, drawn in outline, waiting for
+// the next site. Links down to the build offer, and keeps the grid whole.
+export function OpenFolder() {
+  return (
+    <a
+      href="#builds"
+      className="group block rounded-2xl"
+      aria-label="This folder could hold your organisation's site. See the £3.95 website offer."
+    >
+      <div className="relative mx-auto aspect-[4/3] w-full max-w-[22rem] transition-transform duration-500 ease-out group-hover:-translate-y-2 group-focus-visible:-translate-y-2">
+        <FolderShape
+          dashed
+          className="fill-transparent stroke-on-iron-muted/45 transition-colors group-hover:stroke-signal group-focus-visible:stroke-signal"
+        />
+
+        <div aria-hidden className="absolute inset-x-[10%] top-[20%] bottom-[18%]">
+          <div className="absolute left-1/2 top-0 aspect-[16/10] w-[64%] -translate-x-1/2 rounded-md border border-dashed border-on-iron-muted/35 transition-transform duration-500 ease-out group-hover:-translate-y-[22%] group-focus-visible:-translate-y-[22%]" />
+        </div>
+
+        <div className="absolute inset-x-0 bottom-0 z-20 flex h-[44%] flex-col justify-end p-4 sm:p-5">
+          <h3 className="type-wide text-lg leading-tight font-extrabold text-on-iron">
+            Your organisation&apos;s site
+          </h3>
+          <p className="mt-0.5 flex items-center gap-2 text-sm text-on-iron-muted">
+            <span className="size-1.5 bg-signal" />
+            Built for £3.95
+          </p>
+        </div>
+      </div>
+    </a>
+  );
+}
+
+function FolderShape({ className, dashed = false }: { className: string; dashed?: boolean }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 200 150"
+      preserveAspectRatio="none"
+      className="absolute inset-0 h-full w-full"
+    >
+      <path
+        d="M0 14a14 14 0 0 1 14-14h50a14 14 0 0 1 12 7l6 11h104a14 14 0 0 1 14 14v104a14 14 0 0 1-14 14H14A14 14 0 0 1 0 136Z"
+        className={className}
+        strokeWidth="1.5"
+        strokeDasharray={dashed ? "6 5" : undefined}
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
   );
 }
 

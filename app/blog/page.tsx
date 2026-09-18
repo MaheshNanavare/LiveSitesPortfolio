@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getAllPostsMeta } from "@/lib/posts";
+import { formatPostDate, getAllPostsMeta } from "@/lib/posts";
 
 export const metadata: Metadata = {
   title: "Writing — Mahesh Nanavare",
@@ -35,9 +35,9 @@ export default function BlogIndex() {
             href={`/blog/${post.slug}`}
             className="group grid gap-2 border-t border-rule py-8 md:grid-cols-[10rem_minmax(0,1fr)] md:gap-10"
           >
-            <p className="pt-1 text-sm text-ink-muted tabular-nums">
-              {post.date}
-            </p>
+            <time dateTime={post.date} className="pt-1 text-sm text-ink-muted tabular-nums">
+              {formatPostDate(post.date)}
+            </time>
             <div>
               <h2 className="type-wide text-2xl font-extrabold leading-tight text-ink underline decoration-transparent decoration-[3px] underline-offset-4 transition-colors group-hover:decoration-signal">
                 {post.title}

@@ -17,6 +17,16 @@ export type Post = PostMeta & {
   contentHtml: string;
 };
 
+// "2026-09-09" -> "9 September 2026"
+export function formatPostDate(date: string): string {
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 function readSlugs(): string[] {
   if (!fs.existsSync(postsDirectory)) return [];
   return fs

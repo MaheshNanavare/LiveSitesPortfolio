@@ -13,7 +13,8 @@ export default function OfferSection() {
       className="panel surface-iron dots-dark w-full"
     >
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 sm:px-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:gap-16 md:py-28">
-        <div>
+        {/* The price stays beside the terms as they scroll past */}
+        <div className="md:sticky md:top-[calc(var(--nav-height,4rem)+3rem)] md:self-start">
           <h2
             id="builds-heading"
             className="type-display text-[clamp(2rem,4.2vw,3.25rem)] text-on-iron"

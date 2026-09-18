@@ -90,14 +90,20 @@ export default function ProjectCaseStudy({
           </div>
         </div>
 
-        <div className="mt-12 grid gap-5 md:mt-16 md:grid-cols-12 md:gap-6">
-          <div data-reveal="fan-left" style={delay(1)} className="md:col-span-8 md:row-span-2">
+        {/* On phones the three pages sit side by side in a row you swipe,
+            with the next one peeking in, rather than a long stack. */}
+        <div
+          role="group"
+          aria-label={`Three pages from ${project.name}`}
+          className="shot-row -mx-5 mt-10 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-10 sm:-mx-8 sm:scroll-px-8 sm:px-8 md:mx-0 md:mt-16 md:grid md:grid-cols-12 md:gap-6 md:overflow-visible md:px-0 md:pb-0"
+        >
+          <div data-reveal="fan-left" style={delay(1)} className="w-[86%] shrink-0 snap-start sm:w-[70%] md:col-span-8 md:row-span-2 md:w-auto">
             <BrowserFrame shot={main} tone={tone} fill />
           </div>
-          <div data-reveal="fan-right" style={delay(2)} className="md:col-span-4">
+          <div data-reveal="fan-right" style={delay(2)} className="w-[86%] shrink-0 snap-start sm:w-[70%] md:col-span-4 md:w-auto">
             <BrowserFrame shot={second} tone={tone} />
           </div>
-          <div data-reveal="fan-right" style={delay(3)} className="md:col-span-4">
+          <div data-reveal="fan-right" style={delay(3)} className="w-[86%] shrink-0 snap-start sm:w-[70%] md:col-span-4 md:w-auto">
             <BrowserFrame shot={third} tone={tone} />
           </div>
         </div>

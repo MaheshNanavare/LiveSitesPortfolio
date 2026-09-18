@@ -3,7 +3,7 @@ import BridgeBackdrop from "@/components/BridgeBackdrop";
 import OfferSection from "@/components/OfferSection";
 import MediaSlot from "@/components/MediaSlot";
 import ProjectCaseStudy from "@/components/ProjectCaseStudy";
-import ProjectFolder from "@/components/ProjectFolder";
+import ProjectFolder, { OpenFolder } from "@/components/ProjectFolder";
 import StickyStack from "@/components/StickyStack";
 import { projects } from "@/data/projects";
 import { heroMedia } from "@/data/hero";
@@ -31,7 +31,9 @@ export default function Home() {
         <div className="mx-auto grid max-w-6xl items-end gap-10 px-5 pt-14 pb-16 sm:px-8 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:gap-12 md:pt-20 md:pb-24">
           <div>
             <p className="text-on-iron-muted">Software engineer in Bristol</p>
-            <h1 className="type-display mt-5 text-[clamp(2.75rem,7.2vw,6rem)] text-on-iron">
+            {/* Capped so "blueprint to" still fits one line of the column:
+                three lines at every width, never "to" on its own. */}
+            <h1 className="type-display mt-5 text-[clamp(2.75rem,7.2vw,5rem)] text-on-iron">
               From blueprint to production
             </h1>
             <p className="mt-8 max-w-[52ch] text-lg leading-relaxed text-on-iron-muted">
@@ -110,6 +112,9 @@ export default function Home() {
                 <ProjectFolder project={project} shots={shots} index={i} />
               </li>
             ))}
+            <li data-reveal style={delay(work.length)}>
+              <OpenFolder />
+            </li>
           </ul>
         </div>
       </section>

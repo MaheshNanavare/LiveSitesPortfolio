@@ -1,15 +1,19 @@
+import CompareSlider from "@/components/CompareSlider";
 import type { ResolvedScreenshot } from "@/lib/media";
 
 // A screenshot in a minimal browser window. `fill` lets the image stretch
-// to the height of its grid cell instead of keeping a 16:10 box.
+// to the height of its grid cell instead of keeping a 16:10 box. When the
+// shot has a before image of the old site, it becomes a before/after slider.
 export default function BrowserFrame({
   shot,
   tone,
   fill = false,
+  beforeLabel = "old site",
 }: {
   shot: ResolvedScreenshot;
   tone: "light" | "dark";
   fill?: boolean;
+  beforeLabel?: string;
 }) {
   const dark = tone === "dark";
 
@@ -41,7 +45,15 @@ export default function BrowserFrame({
       <div
         className={`relative aspect-[16/10] overflow-hidden ${fill ? "md:aspect-auto md:flex-1" : ""}`}
       >
-        {shot.ready ? (
+        {shot.ready && shot.before ? (
+          <CompareSlider
+            src={shot.src}
+            before={shot.before}
+            alt={`${shot.caption}, ${shot.url}`}
+            beforeAlt={`${shot.caption} on the ${beforeLabel}, before the rebuild`}
+            beforeLabel={beforeLabel}
+          />
+        ) : shot.ready ? (
           // Static export: next/image optimisation is off, a plain img is equivalent.
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -58,7 +70,7 @@ export default function BrowserFrame({
             <span className="break-all">public{shot.src}</span>
           </div>
         )}
-        <figcaption className="absolute bottom-3 left-3 rounded-full bg-iron/80 px-3 py-1 text-xs font-semibold text-on-iron backdrop-blur-sm">
+        <figcaption className="pointer-events-none absolute bottom-3 left-3 rounded-full bg-iron/80 px-3 py-1 text-xs font-semibold text-on-iron backdrop-blur-sm">
           {shot.caption}
         </figcaption>
       </div>

@@ -21,6 +21,7 @@ export default function ProjectCaseStudy({
   const dark = tone === "dark";
   const headingId = `project-${project.slug}-heading`;
   const [main, second, third] = shots;
+  const compares = shots.some((shot) => shot.ready && shot.before);
 
   // A scene in the case-studies panel (see app/page.tsx). Once StickyStack
   // runs, its own background gives way to the panel's shared, fixed one, and
@@ -87,6 +88,12 @@ export default function ProjectCaseStudy({
                 </a>
               )}
             </div>
+            {compares && (
+              <p className={`mt-5 flex items-center gap-2 text-sm ${dark ? "text-on-iron-muted" : "text-ink-muted"}`}>
+                <span aria-hidden className="size-2 rounded-full bg-signal" />
+                Drag the handle on each screenshot to compare with the {project.before ?? "old site"}.
+              </p>
+            )}
           </div>
         </div>
 
@@ -98,13 +105,13 @@ export default function ProjectCaseStudy({
           className="shot-row -mx-5 mt-10 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-10 sm:-mx-8 sm:scroll-px-8 sm:px-8 md:mx-0 md:mt-16 md:grid md:grid-cols-12 md:gap-6 md:overflow-visible md:px-0 md:pb-0"
         >
           <div data-reveal="fan-left" style={delay(1)} className="w-[86%] shrink-0 snap-start sm:w-[70%] md:col-span-8 md:row-span-2 md:w-auto">
-            <BrowserFrame shot={main} tone={tone} fill />
+            <BrowserFrame shot={main} tone={tone} beforeLabel={project.before} fill />
           </div>
           <div data-reveal="fan-right" style={delay(2)} className="w-[86%] shrink-0 snap-start sm:w-[70%] md:col-span-4 md:w-auto">
-            <BrowserFrame shot={second} tone={tone} />
+            <BrowserFrame shot={second} tone={tone} beforeLabel={project.before} />
           </div>
           <div data-reveal="fan-right" style={delay(3)} className="w-[86%] shrink-0 snap-start sm:w-[70%] md:col-span-4 md:w-auto">
-            <BrowserFrame shot={third} tone={tone} />
+            <BrowserFrame shot={third} tone={tone} beforeLabel={project.before} />
           </div>
         </div>
       </div>

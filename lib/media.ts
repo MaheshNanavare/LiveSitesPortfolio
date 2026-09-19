@@ -10,6 +10,8 @@ export type ResolvedScreenshot = Screenshot & {
   thumb: string;
   url: string;
   ready: boolean;
+  // The same page on the old site, when there's one to compare against.
+  before: string | null;
 };
 
 // Build-time check for whether a media file has been added to public/.
@@ -33,12 +35,14 @@ export function resolveScreenshots(project: Project): ResolvedScreenshot[] {
   return project.screenshots.map((shot, i) => {
     const src = `/media/projects/${project.slug}/${i + 1}.webp`;
     const thumb = `/media/projects/${project.slug}/${i + 1}-sm.webp`;
+    const before = `/media/projects/${project.slug}/${i + 1}-before.webp`;
     return {
       ...shot,
       src,
       thumb: existsInPublic(thumb) ? thumb : src,
       url: origin + shot.page,
       ready: existsInPublic(src),
+      before: existsInPublic(before) ? before : null,
     };
   });
 }

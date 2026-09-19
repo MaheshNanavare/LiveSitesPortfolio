@@ -7,7 +7,9 @@ export type Screenshot = {
 export type Project = {
   // Screenshots live at public/media/projects/<slug>/<1|2|3>.webp, with a
   // 640px-wide <n>-sm.webp beside each for the folder cards. Missing files
-  // render as a placeholder naming the path.
+  // render as a placeholder naming the path. A <n>-before.webp of the
+  // same page on the old site turns that screenshot into a before/after
+  // slider.
   slug: string;
   name: string;
   role: string;
@@ -15,6 +17,8 @@ export type Project = {
   repoUrl?: string;
   description: string;
   screenshots: [Screenshot, Screenshot, Screenshot];
+  // What the old site was, shown on the slider's "before" label.
+  before?: string;
   placeholder?: boolean;
 };
 
@@ -27,6 +31,7 @@ export const projects: Project[] = [
     name: "Baguley Athletic FC",
     role: "Volunteer rebuild",
     liveUrl: "https://baguley-athletic.vercel.app",
+    before: "Wix site",
     description:
       "Volunteer rebuild of a football club's site: migrated off Wix/Ionos to a static Cloudflare Pages build, cutting projected annual hosting cost from ~£118 to ~£10, and integrated FA Full-Time fixture and results feeds so match data updates automatically.",
     screenshots: [
@@ -45,7 +50,7 @@ export const projects: Project[] = [
     screenshots: [
       { page: "/", caption: "Home" },
       { page: "/about", caption: "About" },
-      { page: "/partner", caption: "Partner with Chetacare" },
+      { page: "/blog", caption: "Blog" },
     ],
   },
   {
@@ -53,12 +58,13 @@ export const projects: Project[] = [
     name: "Obuyisi bw'Omu Initiative",
     role: "Volunteer frontend",
     liveUrl: "https://obuyisibwomuinitiative.org",
+    before: "WordPress site",
     description:
       "Volunteer frontend work for a Ugandan nonprofit: built a new page and entry form for their story competition, standardised formatting across existing pages, and fixed broken donation and social links.",
     screenshots: [
       { page: "/", caption: "Home" },
-      { page: "/storycompetition/", caption: "Story competition page" },
-      { page: "/storycompetition/", caption: "Competition entry form" },
+      { page: "/support-a-project/", caption: "Support a project" },
+      { page: "/donate/", caption: "Donate" },
     ],
   },
   {
@@ -70,8 +76,8 @@ export const projects: Project[] = [
       "Cross-platform HTML5 retro game with character movement physics, menus and game loops in vanilla JavaScript, user-acceptance tested across 32 physical and emulated devices.",
     screenshots: [
       { page: "/2025-group-13/", caption: "Title screen" },
-      { page: "/2025-group-13/", caption: "Level instructions" },
-      { page: "/2025-group-13/", caption: "Level 1, Lava Rush" },
+      { page: "/2025-group-13/", caption: "Level 2, Icy Endgame" },
+      { page: "/2025-group-13/", caption: "Level 3, Nocturnal Sand" },
     ],
   },
   {

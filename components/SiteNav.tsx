@@ -2,7 +2,8 @@ import Link from "next/link";
 
 const links = [
   { href: "/#work", label: "Work" },
-  { href: "/blog", label: "Writing" },
+  // Writing link hidden until the first blog post is published:
+  // { href: "/blog", label: "Writing" },
 ];
 
 export default function SiteNav() {
@@ -25,11 +26,8 @@ export default function SiteNav() {
               {link.label}
             </Link>
           ))}
-          <Link href="/blog" className="py-1.5 hover:text-on-iron transition-colors sm:hidden">
-            Writing
-          </Link>
           <a
-            href="mailto:hello@maheshnanavare.co.uk"
+            href="mailto:mpnanavare@gmail.com"
             className="rounded-full bg-signal px-3 py-1.5 font-semibold min-[360px]:px-3.5 min-[400px]:px-4 text-iron hover:bg-on-iron transition-colors"
           >
             Email me

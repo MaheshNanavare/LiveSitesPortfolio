@@ -55,7 +55,7 @@ export default function OfferSection() {
           </ul>
 
           <a
-            href="mailto:hello@maheshnanavare.co.uk?subject=Website%20build%20enquiry"
+            href="mailto:mpnanavare@gmail.com?subject=Website%20build%20enquiry"
             className="mt-8 inline-block rounded-full bg-signal px-6 py-3 font-semibold text-iron hover:bg-on-iron transition-colors"
           >
             Ask about a build

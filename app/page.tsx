@@ -10,11 +10,10 @@ import { heroMedia } from "@/data/hero";
 import { resolveMedia, resolveScreenshots } from "@/lib/media";
 
 const stack = [
-  { group: "Backend", items: ["Java", "Spring Boot", "PostgreSQL", "Hibernate / JPA"] },
   { group: "Frontend", items: ["TypeScript", "React", "Next.js", "Tailwind"] },
-  { group: "Infrastructure", items: ["Docker", "Kubernetes"] },
+  { group: "Backend", items: ["Java", "Spring Boot", "PostgreSQL", "Hibernate / JPA"] },
+  { group: "Testing", items: ["Jest", "JUnit", "Cypress", "Playwright"] },
   { group: "Deployment", items: ["Cloudflare", "Render", "WordPress", "Vercel"] },
-  { group: "Tooling", items: ["Jira", "Postman"] },
 ];
 
 const delay = (i: number) => ({ "--reveal-i": i }) as CSSProperties;

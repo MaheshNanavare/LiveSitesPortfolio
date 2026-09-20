@@ -40,7 +40,7 @@ export default function MonthlyMaintenance() {
       </ul>
 
       <a
-        href="mailto:hello@maheshnanavare.co.uk?subject=Monthly%20maintenance%20enquiry"
+        href="mailto:mpnanavare@gmail.com?subject=Monthly%20maintenance%20enquiry"
         className="inline-block rounded-full bg-signal px-6 py-3 font-semibold text-iron hover:bg-iron hover:text-on-iron transition-colors"
       >
         Email me about maintenance

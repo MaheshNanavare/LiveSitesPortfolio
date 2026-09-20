@@ -41,7 +41,7 @@ export default function AnnualMaintenance() {
       </ul>
 
       <a
-        href="mailto:hello@maheshnanavare.co.uk?subject=Annual%20maintenance%20enquiry"
+        href="mailto:mpnanavare@gmail.com?subject=Annual%20maintenance%20enquiry"
         className="inline-block rounded-full bg-signal px-6 py-3 font-semibold text-iron hover:bg-iron hover:text-on-iron transition-colors"
       >
         Email me about maintenance

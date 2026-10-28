@@ -18,9 +18,9 @@ const martian = Martian_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://maheshnanavare.co.uk"),
-  title: "Mahesh Nanavare — Software Engineer, Bristol",
+  title: "Mahesh Nanavare | Software Developer, Bristol",
   description:
-    "Portfolio of Mahesh Nanavare, a software engineer in Bristol. MSc Computer Science, University of Bristol.",
+    "Mahesh Nanavare, a full-stack software developer in Bristol, UK. Junior developer at Occasia. MSc Computer Science, University of Bristol.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

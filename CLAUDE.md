@@ -46,9 +46,6 @@ start` (`next start`): it doesn't serve a static export.
   `public/media/projects/<slug>/<n>.webp` and `<n>-sm.webp`. Only list
   projects that are actually deployed and live; entries with
   `placeholder: true` are stand-ins to be replaced, not real content.
-- **`app/maintenance/monthly` and `app/maintenance/annual`** — exist
-  intentionally but are not linked from any nav; they carry `noindex`
-  metadata. Don't add nav links to them without being asked.
 - **Homepage panels** (`app/page.tsx`) are direct children of
   `components/StickyStack.tsx` marked `data-panel` with class `panel`,
   so each needs its own full-width opaque background. On the client,
@@ -58,12 +55,15 @@ start` (`next start`): it doesn't serve a static export.
   the screen. Elements marked `data-reveal` (`"fan-left"`/`"fan-right"`
   variants, stagger via the `--reveal-i` style) animate in on scroll.
   The CSS is gated on the `.motion` class, so without JS or with
-  reduced motion the page scrolls normally. Anchor targets (`#work`,
-  `#builds`) are zero-height `.stack-anchor` spans between panels,
+  reduced motion the page scrolls normally. Anchor targets
+  (`#experience`, `#work`) are zero-height `.stack-anchor` spans between panels,
   because a stuck panel's own position isn't its page position. Don't
   put ids on the panels for linking.
-- **Case studies** are not panels. They're scenes (`data-scene`, 0 for
-  light, 1 for dark) inside one `.scene-panel` panel, and only their
+- **Case studies** are not panels. They're scenes (`data-scene`, a shade
+  from 0 for the lightest ground to 1 for the darkest, spread evenly so
+  the case studies darken step by step; the in-between greys use
+  full-strength text, as the muted colours lack contrast there) inside
+  one `.scene-panel` panel, and only their
   content scrolls while the background stays put. StickyStack sets
   `--scene` (which scene is at mid-screen, continuous) and
   `--scene-tone` (the ground, blending between light and dark at each
@@ -75,10 +75,15 @@ start` (`next start`): it doesn't serve a static export.
 - **Bridge backdrop** — `components/BridgeBackdrop.tsx` is the fixed
   background of the case studies: the Clifton Suspension Bridge
   construction renders in `public/media/bridge/<n>.webp` (transparent
-  WebPs, stage 1 to 5, same camera), one stage per case study,
-  crossfading with `--scene`. The last stage is the finished bridge.
+  WebPs, stage 1 to 5, same camera), spread across the case studies
+  and crossfading with `--scene`. With fewer than five case studies it
+  skips stages, so the last case study always shows the finished bridge.
   Each scene's `.scene-wash` fades the bridge behind its heading.
-- **`data/hero.ts`** — the homepage hero media. `lib/media.ts` checks
+- **`data/experience.ts`** — jobs for the homepage Experience section,
+  newest first. `data/projects.ts` also exports `sideProject`, the
+  small "just for fun" game card under the project folders.
+- **`data/hero.ts`** — the homepage hero media (the portrait photo).
+  `lib/media.ts` checks
   at build time whether a media `src` exists under `public/`; missing
   files render as a labelled placeholder
   (`components/MediaSlot.tsx`), so adding the file is enough.

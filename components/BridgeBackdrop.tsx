@@ -10,17 +10,22 @@ const srcSet = (n: number) => `/media/bridge/${n}-sm.webp 960w, /media/bridge/${
 // The fixed background behind the case studies: a frame that sticks to the
 // viewport while the case studies scroll over it. It crossfades from one
 // stage to the next with the panel's --scene (set by StickyStack), so
-// scrolling through the projects builds the bridge, and holds the finished
-// bridge from the last stage on.
-export default function BridgeBackdrop() {
-  // Latest stage first in the DOM, so earlier stages sit on top.
-  const stages = Array.from({ length: BRIDGE_STAGES }, (_, i) => BRIDGE_STAGES - i);
+// scrolling through the projects builds the bridge. With fewer scenes than
+// stages, it skips stages so the last scene still gets the finished bridge;
+// with more, it holds the finished bridge from the last stage on.
+export default function BridgeBackdrop({ scenes }: { scenes: number }) {
+  const count = Math.max(1, Math.min(scenes, BRIDGE_STAGES));
+  // shown[i] is the stage image for scene i, always ending on the last.
+  const shown = Array.from({ length: count }, (_, i) =>
+    count === 1 ? BRIDGE_STAGES : Math.round(1 + (i * (BRIDGE_STAGES - 1)) / (count - 1)),
+  );
 
   return (
     <div aria-hidden className="bridge-backdrop">
       <div className="bridge-backdrop-frame">
         <div className="bridge-stages">
-          {stages.map((n) => (
+          {/* Latest stage first in the DOM, so earlier stages sit on top. */}
+          {[...shown].reverse().map((n, j) => (
             // Static export: next/image optimisation is off, a plain img is equivalent.
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -31,8 +36,8 @@ export default function BridgeBackdrop() {
               alt=""
               loading="lazy"
               decoding="async"
-              style={{ "--stage": n - 1 } as CSSProperties}
-              className={`bridge-stage ${n === BRIDGE_STAGES ? "bridge-stage-last" : ""}`}
+              style={{ "--stage": count - 1 - j } as CSSProperties}
+              className={`bridge-stage ${j === 0 ? "bridge-stage-last" : ""}`}
             />
           ))}
         </div>

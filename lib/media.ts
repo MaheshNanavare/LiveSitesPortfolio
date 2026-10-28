@@ -12,6 +12,8 @@ export type ResolvedScreenshot = Screenshot & {
   ready: boolean;
   // The same page on the old site, when there's one to compare against.
   before: string | null;
+  // A design concept for the same page, shown beside the live site.
+  concept: string | null;
 };
 
 // Build-time check for whether a media file has been added to public/.
@@ -36,6 +38,7 @@ export function resolveScreenshots(project: Project): ResolvedScreenshot[] {
     const src = `/media/projects/${project.slug}/${i + 1}.webp`;
     const thumb = `/media/projects/${project.slug}/${i + 1}-sm.webp`;
     const before = `/media/projects/${project.slug}/${i + 1}-before.webp`;
+    const concept = `/media/projects/${project.slug}/${i + 1}-concept.webp`;
     return {
       ...shot,
       src,
@@ -43,6 +46,7 @@ export function resolveScreenshots(project: Project): ResolvedScreenshot[] {
       url: origin + shot.page,
       ready: existsInPublic(src),
       before: existsInPublic(before) ? before : null,
+      concept: existsInPublic(concept) ? concept : null,
     };
   });
 }

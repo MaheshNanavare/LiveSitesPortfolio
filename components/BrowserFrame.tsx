@@ -1,9 +1,10 @@
-import CompareSlider from "@/components/CompareSlider";
+import CompareTabs, { type Version } from "@/components/CompareTabs";
 import type { ResolvedScreenshot } from "@/lib/media";
 
 // A screenshot in a minimal browser window. `fill` lets the image stretch
 // to the height of its grid cell instead of keeping a 16:10 box. When the
-// shot has a before image of the old site, it becomes a before/after slider.
+// shot has a before image of the old site, buttons switch between Before
+// and After (or Before, My concept and Live now when there's a concept).
 export default function BrowserFrame({
   shot,
   tone,
@@ -16,6 +17,27 @@ export default function BrowserFrame({
   beforeLabel?: string;
 }) {
   const dark = tone === "dark";
+
+  // Oldest first, opening on the newest version I made: the concept when
+  // there is one, otherwise the live site.
+  const versions: Version[] | null =
+    shot.ready && shot.before
+      ? [
+          {
+            label: "Before",
+            src: shot.before,
+            alt: `${shot.caption} on the ${beforeLabel}, before the rebuild`,
+          },
+          ...(shot.concept
+            ? [{ label: "My concept", src: shot.concept, alt: `${shot.caption} in my design concept` }]
+            : []),
+          {
+            label: shot.concept ? "Live now" : "After",
+            src: shot.src,
+            alt: `${shot.caption}, ${shot.url}`,
+          },
+        ]
+      : null;
 
   return (
     <figure
@@ -45,14 +67,8 @@ export default function BrowserFrame({
       <div
         className={`relative aspect-[16/10] overflow-hidden ${fill ? "md:aspect-auto md:flex-1" : ""}`}
       >
-        {shot.ready && shot.before ? (
-          <CompareSlider
-            src={shot.src}
-            before={shot.before}
-            alt={`${shot.caption}, ${shot.url}`}
-            beforeAlt={`${shot.caption} on the ${beforeLabel}, before the rebuild`}
-            beforeLabel={beforeLabel}
-          />
+        {versions ? (
+          <CompareTabs versions={versions} initial={shot.concept ? 1 : versions.length - 1} />
         ) : shot.ready ? (
           // Static export: next/image optimisation is off, a plain img is equivalent.
           // eslint-disable-next-line @next/next/no-img-element

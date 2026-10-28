@@ -10,18 +10,25 @@ export default function ProjectCaseStudy({
   shots,
   index,
   total,
-  tone,
+  shade,
 }: {
   project: Project;
   shots: ResolvedScreenshot[];
   index: number;
   total: number;
-  tone: "light" | "dark";
+  // How dark this scene's ground is, from 0 (lightest) to 1 (darkest).
+  shade: number;
 }) {
-  const dark = tone === "dark";
+  const dark = shade >= 0.5;
+  const tone = dark ? "dark" : "light";
+  // The muted text colours only have enough contrast on the lightest and
+  // darkest grounds, so the greys in between use full-strength text.
+  const mid = shade > 0 && shade < 1;
+  const muted = dark ? (mid ? "text-on-iron" : "text-on-iron-muted") : mid ? "text-ink" : "text-ink-muted";
   const headingId = `project-${project.slug}-heading`;
   const [main, second, third] = shots;
   const compares = shots.some((shot) => shot.ready && shot.before);
+  const hasConcept = shots.some((shot) => shot.ready && shot.before && shot.concept);
 
   // A scene in the case-studies panel (see app/page.tsx). Once StickyStack
   // runs, its own background gives way to the panel's shared, fixed one, and
@@ -29,17 +36,18 @@ export default function ProjectCaseStudy({
   return (
     <section
       id={`project-${project.slug}`}
-      data-scene={dark ? 1 : 0}
+      data-scene={Math.round(shade * 1000) / 1000}
       aria-labelledby={headingId}
-      className={`scene relative w-full ${dark ? "surface-iron dots-dark" : "bg-stone-deep dots-light"}`}
+      style={{ "--own-tone": shade } as CSSProperties}
+      className={`scene scene-own relative w-full ${dark ? "surface-iron dots-dark" : "dots-light"}`}
     >
       <div aria-hidden className="scene-wash" />
       <div className="relative mx-auto max-w-6xl px-5 py-16 sm:px-8 md:py-24">
         <div
           data-reveal
           className={`flex flex-wrap items-center justify-between gap-3 border-b pb-4 text-sm ${
-            dark ? "border-iron-rule text-on-iron-muted" : "border-rule text-ink-muted"
-          }`}
+            dark ? "border-iron-rule" : "border-rule"
+          } ${muted}`}
         >
           <span className="tabular-nums">
             {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
@@ -61,7 +69,7 @@ export default function ProjectCaseStudy({
             {project.name}
           </h3>
           <div data-reveal style={delay(2)}>
-            <p className={`max-w-[58ch] text-lg ${dark ? "text-on-iron-muted" : "text-ink-muted"}`}>
+            <p className={`max-w-[58ch] text-lg ${muted}`}>
               {project.description}
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
@@ -80,18 +88,18 @@ export default function ProjectCaseStudy({
                   href={project.repoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`underline underline-offset-4 ${
-                    dark ? "text-on-iron-muted hover:text-on-iron" : "text-ink-muted hover:text-ink"
-                  }`}
+                  className={`underline underline-offset-4 ${muted} ${dark ? "hover:text-on-iron" : "hover:text-ink"}`}
                 >
                   Source code
                 </a>
               )}
             </div>
             {compares && (
-              <p className={`mt-5 flex items-center gap-2 text-sm ${dark ? "text-on-iron-muted" : "text-ink-muted"}`}>
+              <p className={`mt-5 flex items-center gap-2 text-sm ${muted}`}>
                 <span aria-hidden className="size-2 rounded-full bg-signal" />
-                Drag the handle on each screenshot to compare with the {project.before ?? "old site"}.
+                {hasConcept
+                  ? "Use the buttons on each screenshot to compare my concept with the old site and the live site now."
+                  : `Use the buttons on each screenshot to compare with the ${project.before ?? "old site"}.`}
               </p>
             )}
           </div>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 const links = [
+  { href: "/#experience", label: "Experience" },
   { href: "/#work", label: "Work" },
   // Writing link hidden until the first blog post is published:
   // { href: "/blog", label: "Writing" },

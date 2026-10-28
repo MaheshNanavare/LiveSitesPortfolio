@@ -29,6 +29,8 @@ export default function MediaSlot({
       <img
         className={`h-full w-full object-cover ${className}`}
         src={media.src}
+        srcSet={media.srcSet}
+        sizes={media.srcSet ? "(min-width: 48rem) 28rem, 100vw" : undefined}
         alt={media.alt}
       />
     );

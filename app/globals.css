@@ -152,8 +152,17 @@ body {
 
 /* The case studies (see app/page.tsx): scenes in one panel whose content
    scrolls over a shared background that stays put. StickyStack sets
-   --scene-tone (0 light, 1 dark) and --scene on the panel. Until it runs,
-   or with reduced motion, each scene keeps its own background instead. */
+   --scene-tone (0 lightest to 1 darkest, blending between each scene's
+   data-scene) and --scene on the panel. Until it runs, or with reduced
+   motion, each scene keeps its own background (.scene-own) instead. */
+.scene-own {
+  background-color: color-mix(
+    in srgb,
+    var(--color-iron) calc(var(--own-tone, 0) * 100%),
+    var(--color-stone-deep)
+  );
+}
+
 .scene-panel {
   --scene-ground: color-mix(
     in srgb,

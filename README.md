@@ -27,14 +27,18 @@ each screenshot's `page` (shown in the browser frame's address bar) and
 `caption` in the project entry. Missing files show a placeholder naming
 the expected path.
 
-## Hero video
+## Hero image
 
-The homepage hero is `heroMedia` in `data/hero.ts`, a path under
-`public/` (e.g. `/media/hero/bristol-harbourside.mp4`). Until a file
-exists at that path, the site shows a placeholder naming it. To add it,
-drop the file at that path and rebuild; to use a photo instead, change
-`kind` and `src`. Keep videos short, muted-friendly and compressed
-(they autoplay on loop).
+The homepage hero is `heroMedia` in `data/hero.ts`: a portrait photo at
+`public/media/hero/portrait.webp` (960×1200, 4:5) with a 640×800
+`portrait-sm.webp` beside it. Until a file exists at the path, the site
+shows a placeholder naming it. To use a video instead, change `kind`
+and `src`, and keep it short and compressed (videos autoplay on loop).
+
+## Experience
+
+Jobs live in `data/experience.ts`, newest first, and render in the
+Experience section of the homepage.
 
 ## Adding a blog post
 
@@ -52,11 +56,6 @@ Body content in markdown.
 
 The post is picked up automatically at build time — no code changes
 needed.
-
-## Unlinked pages
-
-`/maintenance/monthly` and `/maintenance/annual` exist but are not
-linked from anywhere in the site nav. They carry `noindex` metadata.
 
 ## Build & deploy (Cloudflare Pages)
 

@@ -30,8 +30,10 @@ the expected path.
 ## Hero image
 
 The homepage hero is `heroMedia` in `data/hero.ts`: a portrait photo at
-`public/media/hero/portrait.webp` (960×1200, 4:5) with a 640×800
-`portrait-sm.webp` beside it. Until a file exists at the path, the site
+`public/media/hero/portrait.webp` (960×1259) with a 640×840
+`portrait-sm.webp` beside it. The hero frame's aspect ratio in
+`app/page.tsx` matches the photo, so a new photo of a different shape
+needs that updated too. Until a file exists at the path, the site
 shows a placeholder naming it. To use a video instead, change `kind`
 and `src`, and keep it short and compressed (videos autoplay on loop).
 

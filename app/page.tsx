@@ -55,7 +55,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-lg border border-iron-rule md:max-w-none">
+          {/* Same shape as the portrait (960×1259), so none of its crop is lost */}
+          <div className="mx-auto aspect-[960/1259] w-full max-w-md overflow-hidden rounded-lg border border-iron-rule md:max-w-none">
             <MediaSlot media={resolveMedia(heroMedia)} />
           </div>
         </div>

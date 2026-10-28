@@ -11,8 +11,8 @@ export type Media = {
   alt: string;
 };
 
-// Portrait photo cropped to 4:5 (960×1200, with a 640×800 copy), so the
-// hero frame is taller than wide.
+// Portrait photo, used uncropped at 960×1259 with a 640×840 copy. The
+// hero frame in app/page.tsx matches its shape.
 export const heroMedia: Media = {
   kind: "image",
   src: "/media/hero/portrait.webp",

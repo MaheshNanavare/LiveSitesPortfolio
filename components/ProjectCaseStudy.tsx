@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import BrowserFrame from "@/components/BrowserFrame";
+import { CompareButtons, CompareGroup } from "@/components/CompareTabs";
 import type { Project } from "@/data/projects";
 import type { ResolvedScreenshot } from "@/lib/media";
 
@@ -29,6 +30,29 @@ export default function ProjectCaseStudy({
   const [main, second, third] = shots;
   const compares = shots.some((shot) => shot.ready && shot.before);
   const hasConcept = shots.some((shot) => shot.ready && shot.before && shot.concept);
+
+  // On phones the three pages sit side by side in a row you swipe, with the
+  // next one peeking in, rather than a long stack. With compare buttons
+  // above it, the row sits closer to them.
+  const shotRow = (
+    <div
+      role="group"
+      aria-label={`Three pages from ${project.name}`}
+      className={`shot-row -mx-5 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-10 sm:-mx-8 sm:scroll-px-8 sm:px-8 md:mx-0 md:grid md:grid-cols-12 md:gap-6 md:overflow-visible md:px-0 md:pb-0 ${
+        compares ? "mt-5 md:mt-6" : "mt-10 md:mt-16"
+      }`}
+    >
+      <div data-reveal="fan-left" style={delay(1)} className="w-[86%] shrink-0 snap-start sm:w-[70%] md:col-span-8 md:row-span-2 md:w-auto">
+        <BrowserFrame shot={main} tone={tone} beforeLabel={project.before} fill />
+      </div>
+      <div data-reveal="fan-right" style={delay(2)} className="w-[86%] shrink-0 snap-start sm:w-[70%] md:col-span-4 md:w-auto">
+        <BrowserFrame shot={second} tone={tone} beforeLabel={project.before} />
+      </div>
+      <div data-reveal="fan-right" style={delay(3)} className="w-[86%] shrink-0 snap-start sm:w-[70%] md:col-span-4 md:w-auto">
+        <BrowserFrame shot={third} tone={tone} beforeLabel={project.before} />
+      </div>
+    </div>
+  );
 
   // A scene in the case-studies panel (see app/page.tsx). Once StickyStack
   // runs, its own background gives way to the panel's shared, fixed one, and
@@ -94,34 +118,34 @@ export default function ProjectCaseStudy({
                 </a>
               )}
             </div>
-            {compares && (
-              <p className={`mt-5 flex items-center gap-2 text-sm ${muted}`}>
-                <span aria-hidden className="size-2 rounded-full bg-signal" />
-                {hasConcept
-                  ? "Use the buttons on each screenshot to compare my concept with the old site and the live site now."
-                  : `Use the buttons on each screenshot to compare with the ${project.before ?? "old site"}.`}
-              </p>
-            )}
           </div>
         </div>
 
-        {/* On phones the three pages sit side by side in a row you swipe,
-            with the next one peeking in, rather than a long stack. */}
-        <div
-          role="group"
-          aria-label={`Three pages from ${project.name}`}
-          className="shot-row -mx-5 mt-10 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-10 sm:-mx-8 sm:scroll-px-8 sm:px-8 md:mx-0 md:mt-16 md:grid md:grid-cols-12 md:gap-6 md:overflow-visible md:px-0 md:pb-0"
-        >
-          <div data-reveal="fan-left" style={delay(1)} className="w-[86%] shrink-0 snap-start sm:w-[70%] md:col-span-8 md:row-span-2 md:w-auto">
-            <BrowserFrame shot={main} tone={tone} beforeLabel={project.before} fill />
-          </div>
-          <div data-reveal="fan-right" style={delay(2)} className="w-[86%] shrink-0 snap-start sm:w-[70%] md:col-span-4 md:w-auto">
-            <BrowserFrame shot={second} tone={tone} beforeLabel={project.before} />
-          </div>
-          <div data-reveal="fan-right" style={delay(3)} className="w-[86%] shrink-0 snap-start sm:w-[70%] md:col-span-4 md:w-auto">
-            <BrowserFrame shot={third} tone={tone} beforeLabel={project.before} />
-          </div>
-        </div>
+        {compares ? (
+          <CompareGroup initial={hasConcept ? "concept" : "live"}>
+            <div
+              data-reveal
+              className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-3 md:mt-16"
+            >
+              <CompareButtons
+                label={`Show a version of the ${project.name} pages`}
+                options={[
+                  { key: "before", label: "Before" },
+                  ...(hasConcept ? [{ key: "concept" as const, label: "My concept" }] : []),
+                  { key: "live", label: hasConcept ? "Live now" : "After" },
+                ]}
+              />
+              <p className={`text-sm ${muted}`}>
+                {hasConcept
+                  ? "Switch the screenshots between the old site, my concept and the live site now."
+                  : `Switch the screenshots between the ${project.before ?? "old site"} and the new site.`}
+              </p>
+            </div>
+            {shotRow}
+          </CompareGroup>
+        ) : (
+          shotRow
+        )}
       </div>
     </section>
   );

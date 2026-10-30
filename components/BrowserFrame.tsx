@@ -1,10 +1,10 @@
-import CompareTabs, { type Version } from "@/components/CompareTabs";
+import { CompareImages, type Version } from "@/components/CompareTabs";
 import type { ResolvedScreenshot } from "@/lib/media";
 
 // A screenshot in a minimal browser window. `fill` lets the image stretch
 // to the height of its grid cell instead of keeping a 16:10 box. When the
-// shot has a before image of the old site, buttons switch between Before
-// and After (or Before, My concept and Live now when there's a concept).
+// shot has a before image of the old site, it holds every version and shows
+// the one picked by the project's buttons (see ProjectCaseStudy).
 export default function BrowserFrame({
   shot,
   tone,
@@ -18,21 +18,19 @@ export default function BrowserFrame({
 }) {
   const dark = tone === "dark";
 
-  // Oldest first, opening on the newest version I made: the concept when
-  // there is one, otherwise the live site.
   const versions: Version[] | null =
     shot.ready && shot.before
       ? [
           {
-            label: "Before",
+            key: "before",
             src: shot.before,
             alt: `${shot.caption} on the ${beforeLabel}, before the rebuild`,
           },
           ...(shot.concept
-            ? [{ label: "My concept", src: shot.concept, alt: `${shot.caption} in my design concept` }]
+            ? [{ key: "concept" as const, src: shot.concept, alt: `${shot.caption} in my design concept` }]
             : []),
           {
-            label: shot.concept ? "Live now" : "After",
+            key: "live",
             src: shot.src,
             alt: `${shot.caption}, ${shot.url}`,
           },
@@ -68,7 +66,7 @@ export default function BrowserFrame({
         className={`relative aspect-[16/10] overflow-hidden ${fill ? "md:aspect-auto md:flex-1" : ""}`}
       >
         {versions ? (
-          <CompareTabs versions={versions} initial={shot.concept ? 1 : versions.length - 1} />
+          <CompareImages versions={versions} />
         ) : shot.ready ? (
           // Static export: next/image optimisation is off, a plain img is equivalent.
           // eslint-disable-next-line @next/next/no-img-element

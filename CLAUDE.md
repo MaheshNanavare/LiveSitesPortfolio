@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Portfolio and blog for Mahesh Nanavare (maheshnanavare.co.uk). Next.js
 App Router + TypeScript + Tailwind CSS v4, built as a fully static
 export (`output: "export"` in `next.config.ts`) with no server runtime.
-Deploys to Cloudflare Pages.
+Deploys to Vercel.
 
 ## Commands
 
@@ -20,9 +20,9 @@ npm run lint    # eslint
 ```
 
 There is no test suite, so `npm run build` (which also type-checks)
-and `npm run lint` are the checks. The Cloudflare Pages build command
-is `npm run build` with output directory `out`. Don't use `npm run
-start` (`next start`): it doesn't serve a static export.
+and `npm run lint` are the checks. Vercel builds with `npm run build`
+and serves `out/`. Don't use `npm run start` (`next start`): it
+doesn't serve a static export.
 
 ## Architecture
 
@@ -92,6 +92,10 @@ start` (`next start`): it doesn't serve a static export.
   `StickyStack` is the only `"use client"` component and receives
   server-rendered panels as `children`. Don't import `fs`-backed
   modules into client components.
+- **Analytics** — `app/layout.tsx` renders `<Analytics />` from
+  `@vercel/analytics/next` (Vercel Web Analytics). It only reports
+  data on a Vercel deployment with Web Analytics enabled for the
+  project.
 - Next 16 conventions used here: route `params` is a `Promise` and
   must be awaited, and layouts use the generated global
   `LayoutProps<"/">` type. Blog HTML is injected with
